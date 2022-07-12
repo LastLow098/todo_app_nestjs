@@ -11,6 +11,6 @@ export class TodosResolves {
 
   @Mutation(() => TodoEntity)
   async updateTodo(@Args('updateTodo') todoInput: UpdateTodosInput): Promise<TodoEntity> {
-    return await this.todosService.updateTodoAsync(todoInput)
+    return await this.todosService.updateTodo(todoInput)
   }
 }

@@ -20,8 +20,8 @@ export class ProjectsResolver {
   }
 
   @Mutation(() => ProjectsEntity)
-  async createProjects(@Args('createProjects') projectInput: CreateProjectsInput, @Args('createTodo') todoInput: CreateTodosInput): Promise<ProjectsEntity> {
-    return await this.projectService.createProjects(projectInput, todoInput)
+  async createTodo(@Args('project') projectInput: CreateProjectsInput, @Args('createTodo') todoInput: CreateTodosInput): Promise<ProjectsEntity> {
+    return await this.projectService.createTodo(projectInput, todoInput)
   }
   //
   // @Query(() => String)

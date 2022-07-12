@@ -16,7 +16,7 @@ export class TodosService {
     private readonly todoRepository: Repository<TodoEntity>
   ) {}
 
-  async createTodoAsync(todoInput: CreateTodosInput): Promise<TodoEntity> {
+  async createTodo(todoInput: CreateTodosInput): Promise<TodoEntity> {
     return await this.todoRepository.save({...todoInput})
   }
 
@@ -24,7 +24,7 @@ export class TodosService {
     return await this.todoRepository.find({where: { projectsId: id }, order: { id: "ASC" }})
   }
 
-  async updateTodoAsync(updateTodo: UpdateTodosInput): Promise<TodoEntity> {
+  async updateTodo(updateTodo: UpdateTodosInput): Promise<TodoEntity> {
     await this.todoRepository.update({id: updateTodo.id}, {...updateTodo})
     return await this.todoRepository.findOne({where: { id: updateTodo.id }})
   }

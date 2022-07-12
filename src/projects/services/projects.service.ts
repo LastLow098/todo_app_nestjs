@@ -22,14 +22,14 @@ export class ProjectsService {
     return elem
   }
 
-  async createProjects(projectInput: CreateProjectsInput, todoInput: CreateTodosInput): Promise<ProjectsEntity> {
+  async createTodo(projectInput: CreateProjectsInput, todoInput: CreateTodosInput): Promise<ProjectsEntity> {
     if (!!projectInput.id) {
       let project = await this.projectsRepository.save({...projectInput})
       todoInput.projectsId = project.id
     }else {
       todoInput.projectsId = projectInput.id
     }
-    await this.todoService.createTodoAsync(todoInput)
+    await this.todoService.createTodo(todoInput)
     return await this.getProjectsOne(todoInput.projectsId)
   }
 
