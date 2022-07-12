@@ -1,0 +1,44 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type TodoEntity {
+  id: ID!
+  text: String!
+  isCompleted: Boolean!
+  projectsId: Float!
+}
+
+type ProjectsEntity {
+  id: ID!
+  title: String!
+  todos: [TodoEntity!]!
+}
+
+type Query {
+  getProjects: [ProjectsEntity!]!
+}
+
+type Mutation {
+  deleteProjects(deleteId: Float!): ProjectsEntity!
+  createTodo(project: CreateProjectsInput!, createTodo: CreateTodosInput!): ProjectsEntity!
+  updateTodo(updateTodo: UpdateTodosInput!): TodoEntity!
+}
+
+input CreateProjectsInput {
+  id: Float
+  title: String
+}
+
+input CreateTodosInput {
+  text: String!
+  isCompleted: Boolean = false
+  projectsId: Float
+}
+
+input UpdateTodosInput {
+  id: ID!
+  text: String
+  isCompleted: Boolean
+  projectsId: Float
+}
