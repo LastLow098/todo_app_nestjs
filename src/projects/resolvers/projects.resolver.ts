@@ -15,17 +15,7 @@ export class ProjectsResolver {
   }
 
   @Mutation(() => ProjectsEntity)
-  async deleteProjects(@Args('deleteId') id: number): Promise<ProjectsEntity> {
-    return await this.projectService.deleteProjects(id)
-  }
-
-  @Mutation(() => ProjectsEntity)
   async createTodo(@Args('project') projectInput: CreateProjectsInput, @Args('createTodo') todoInput: CreateTodosInput): Promise<ProjectsEntity> {
     return await this.projectService.createTodo(projectInput, todoInput)
   }
-  //
-  // @Query(() => String)
-  // async testResolver(): Promise<string> {
-  //   return 'test';
-  // }
 }

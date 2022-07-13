@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { GraphQLModule } from '@nestjs/graphql';
-import { ConfigModule } from "@nestjs/config";
 import { ProjectsModule } from './projects/projects.module';
 import { TodosModule } from './todos/todos.module';
 

@@ -23,7 +23,7 @@ export class ProjectsService {
   }
 
   async createTodo(projectInput: CreateProjectsInput, todoInput: CreateTodosInput): Promise<ProjectsEntity> {
-    if (!!projectInput.id) {
+    if (!projectInput.id) {
       let project = await this.projectsRepository.save({...projectInput})
       todoInput.projectsId = project.id
     }else {
@@ -35,14 +35,14 @@ export class ProjectsService {
 
   async getProjectsOne(id: number): Promise<ProjectsEntity> {
     let project = await this.projectsRepository.findOne({where: {id: id}})
-    project.todos = await this.todoService.getTodosAsync(project.id)
+    project.todos = await this.todoService.getTodos(project.id)
     return project
   }
 
   async getProjects(): Promise<Array<ProjectsEntity>> {
     let projects =  await this.projectsRepository.find({ order: { id: "ASC" }})
     projects.forEach((elem: any) => {
-      elem.todos = this.todoService.getTodosAsync(elem.id)
+      elem.todos = this.todoService.getTodos(elem.id)
     })
     return projects
   }

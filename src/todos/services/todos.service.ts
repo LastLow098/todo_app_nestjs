@@ -20,7 +20,7 @@ export class TodosService {
     return await this.todoRepository.save({...todoInput})
   }
 
-  async getTodosAsync(id: number): Promise<TodoEntity[]> {
+  async getTodos(id: number): Promise<TodoEntity[]> {
     return await this.todoRepository.find({where: { projectsId: id }, order: { id: "ASC" }})
   }
 
@@ -31,6 +31,11 @@ export class TodosService {
 
   async deleteTodos(id: number): Promise<number> {
     await this.todoRepository.delete({projectsId: id})
+    return id
+  }
+
+  async deleteTodo(id: number): Promise<number> {
+    await this.todoRepository.delete({id})
     return id
   }
 }

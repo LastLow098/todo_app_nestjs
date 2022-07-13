@@ -20,7 +20,6 @@ type Query {
 }
 
 type Mutation {
-  deleteProjects(deleteId: Float!): ProjectsEntity!
   createTodo(project: CreateProjectsInput!, createTodo: CreateTodosInput!): ProjectsEntity!
   updateTodo(updateTodo: UpdateTodosInput!): TodoEntity!
 }
