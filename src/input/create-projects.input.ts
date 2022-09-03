@@ -1,10 +1,8 @@
 import { Field, InputType } from "@nestjs/graphql";
+import { TodoEntity } from "../entities/todo.entity";
 
 @InputType()
 export class CreateProjectsInput {
-  @Field({ nullable: true })
-  id: number
-
-  @Field({ nullable: true })
+  @Field()
   title: string
 }

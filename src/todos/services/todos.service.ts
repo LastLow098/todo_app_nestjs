@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 
@@ -13,29 +13,14 @@ import { ProjectsEntity } from "../../entities/projects.entity";
 export class TodosService {
   constructor(
     @InjectRepository(TodoEntity)
-    private readonly todoRepository: Repository<TodoEntity>
+    private readonly todoRepository: Repository<TodoEntity>,
+    private readonly projectService: ProjectsService
   ) {}
 
-  async createTodo(todoInput: CreateTodosInput): Promise<TodoEntity> {
-    return await this.todoRepository.save({...todoInput})
-  }
+  async create(createTodo: CreateTodosInput, createProject?: CreateProjectsInput): Promise<ProjectsEntity> {
+    if (!createProject && !createTodo.projectId) throw new HttpException('Invalid inputs', HttpStatus.BAD_REQUEST);
 
-  async getTodos(id: number): Promise<TodoEntity[]> {
-    return await this.todoRepository.find({where: { projectsId: id }, order: { id: "ASC" }})
-  }
-
-  async updateTodo(updateTodo: UpdateTodosInput): Promise<TodoEntity> {
-    await this.todoRepository.update({id: updateTodo.id}, {...updateTodo})
-    return await this.todoRepository.findOne({where: { id: updateTodo.id }})
-  }
-
-  async deleteTodos(id: number): Promise<number> {
-    await this.todoRepository.delete({projectsId: id})
-    return id
-  }
-
-  async deleteTodo(id: number): Promise<number> {
-    await this.todoRepository.delete({id})
-    return id
+    let todo = await this.todoRepository.create(createTodo);
+    return createProject ? await this.projectService.create(createProject, todo) : await this.projectService.addTodoInProject(todo, createTodo.projectId);
   }
 }

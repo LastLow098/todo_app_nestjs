@@ -6,7 +6,7 @@ type TodoEntity {
   id: ID!
   text: String!
   isCompleted: Boolean!
-  projectsId: Float!
+  projectId: Float!
 }
 
 type ProjectsEntity {
@@ -15,29 +15,32 @@ type ProjectsEntity {
   todos: [TodoEntity!]!
 }
 
+input Todo {
+  id: ID!
+  text: String!
+  isCompleted: Boolean!
+  projectId: Float!
+}
+
+input Project {
+  id: ID!
+  title: String!
+  todos: [Todo!]!
+}
+
 type Query {
   getProjects: [ProjectsEntity!]!
 }
 
 type Mutation {
-  createTodo(project: CreateProjectsInput!, createTodo: CreateTodosInput!): ProjectsEntity!
-  updateTodo(updateTodo: UpdateTodosInput!): TodoEntity!
-}
-
-input CreateProjectsInput {
-  id: Float
-  title: String
+  createTodo(todo: CreateTodosInput!, project: CreateProjectsInput): ProjectsEntity!
 }
 
 input CreateTodosInput {
   text: String!
-  isCompleted: Boolean = false
-  projectsId: Float
+  projectId: Int
 }
 
-input UpdateTodosInput {
-  id: ID!
-  text: String
-  isCompleted: Boolean
-  projectsId: Float
+input CreateProjectsInput {
+  title: String!
 }
