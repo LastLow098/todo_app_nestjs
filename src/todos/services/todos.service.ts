@@ -17,10 +17,25 @@ export class TodosService {
     private readonly projectService: ProjectsService
   ) {}
 
-  async create(createTodo: CreateTodosInput, createProject?: CreateProjectsInput): Promise<ProjectsEntity> {
+  async create(createTodo: CreateTodosInput, createProject?: CreateProjectsInput): Promise<TodoEntity> {
     if (!createProject && !createTodo.projectId) throw new HttpException('Invalid inputs', HttpStatus.BAD_REQUEST);
 
-    let todo = await this.todoRepository.create(createTodo);
-    return createProject ? await this.projectService.create(createProject, todo) : await this.projectService.addTodoInProject(todo, createTodo.projectId);
+    let { text, projectId } = createTodo
+    let todo = this.todoRepository.create({ text });
+    createProject ? await this.projectService.create(createProject, todo) : await this.projectService.addTodoInProject(todo, projectId);
+    return await this.todoRepository.findOne({
+      where: { id: todo.id },
+      relations: { project: true }
+    })
+  }
+
+  async update(id: number): Promise<TodoEntity> {
+    let todo = await this.todoRepository.findOne({ where: {id} });
+    todo.isCompleted = !todo.isCompleted;
+    return await this.todoRepository.save(todo);
+  }
+
+  async delete(id: number): Promise<void> {
+    await this.todoRepository.delete(id)
   }
 }

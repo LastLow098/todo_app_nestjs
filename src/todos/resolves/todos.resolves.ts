@@ -15,11 +15,21 @@ export class TodosResolves {
   ) {
   }
 
-  @Mutation(() => ProjectsEntity)
+  @Mutation(() => TodoEntity)
   async createTodo(
     @Args('todo') createTodo: CreateTodosInput,
     @Args('project', { nullable: true }) createProject: CreateProjectsInput,
-  ): Promise<ProjectsEntity> {
+  ): Promise<TodoEntity> {
     return await this.todosService.create(createTodo, createProject);
+  }
+
+  @Mutation(() => TodoEntity)
+  async updateTodo(@Args('TodoId') id: number): Promise<TodoEntity> {
+    return await this.todosService.update(id);
+  }
+
+  @Mutation(() => TodoEntity, { nullable: true })
+  async deleteTodo(@Args('TodoId') id: number): Promise<void> {
+    await this.todosService.delete(id)  
   }
 }

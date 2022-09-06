@@ -5,7 +5,7 @@ const options: TypeOrmModuleOptions = {
   host: "localhost",
   port: 5432,
   username: "postgres",
-  password: "Ll985652-*",
+  password: "poijklkjn",
   database: "dbtestnest",
   entities: ["dist/**/*.entity.js"],
   synchronize: true,

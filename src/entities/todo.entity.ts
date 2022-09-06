@@ -23,6 +23,7 @@ export class TodoEntity {
   @Column()
   projectId: number;
 
+  @Field((type) => ProjectsEntity)
   @ManyToOne(() => ProjectsEntity, (project) => project.id)
   project: ProjectsEntity;
 }
