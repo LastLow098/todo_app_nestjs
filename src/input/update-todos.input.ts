@@ -1,16 +1,12 @@
-import { Field, ID, InputType } from "@nestjs/graphql";
+import {Field, ID, InputType, Int} from "@nestjs/graphql";
+import {PrimaryGeneratedColumn} from "typeorm";
 
 @InputType()
 export class UpdateTodosInput {
-  @Field(() => ID)
+  @Field(type => Int)
+  @PrimaryGeneratedColumn()
   id: number
 
-  @Field({ nullable: true })
+  @Field()
   text: string
-
-  @Field({ nullable: true })
-  isCompleted: boolean
-
-  @Field({ nullable: true })
-  projectsId: number
 }

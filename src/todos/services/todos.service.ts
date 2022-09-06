@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
+import {BadRequestException, HttpException, HttpStatus, Injectable} from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 
@@ -18,7 +18,8 @@ export class TodosService {
   ) {}
 
   async create(createTodo: CreateTodosInput, createProject?: CreateProjectsInput): Promise<TodoEntity> {
-    if (!createProject && !createTodo.projectId) throw new HttpException('Invalid inputs', HttpStatus.BAD_REQUEST);
+    if (!createProject && !createTodo.projectId || createProject && createTodo.projectId)
+      throw new BadRequestException('Invalid input data');
 
     let { text, projectId } = createTodo
     let todo = this.todoRepository.create({ text });
@@ -26,16 +27,29 @@ export class TodosService {
     return await this.todoRepository.findOne({
       where: { id: todo.id },
       relations: { project: true }
-    })
+    });
   }
 
-  async update(id: number): Promise<TodoEntity> {
-    let todo = await this.todoRepository.findOne({ where: {id} });
+  async findOne(id: number): Promise<TodoEntity> {
+    let todo = await this.todoRepository.findOne({ where: { id } });
+    if (!todo)
+      throw new BadRequestException('This todo no longer exists');
+
+    return todo;
+  }
+
+  async update(updateTodo: UpdateTodosInput): Promise<TodoEntity> {
+    return await this.todoRepository.save(updateTodo);
+  }
+
+  async changeCompleted(id: number): Promise<TodoEntity> {
+    let todo = await this.findOne(id);
     todo.isCompleted = !todo.isCompleted;
     return await this.todoRepository.save(todo);
   }
 
-  async delete(id: number): Promise<void> {
-    await this.todoRepository.delete(id)
+  async delete(id: number): Promise<TodoEntity> {
+    await this.todoRepository.delete({id});
+    return await this.findOne(id);
   }
 }

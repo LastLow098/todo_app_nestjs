@@ -3,7 +3,7 @@ import { Field, InputType, Int } from "@nestjs/graphql";
 @InputType()
 export class CreateTodosInput {
   @Field()
-  text: string
+  text: string;
 
   @Field(() => Int, { nullable: true })
   projectId: number;

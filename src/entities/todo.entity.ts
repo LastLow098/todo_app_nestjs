@@ -1,5 +1,5 @@
 import { Column, Entity, OneToOne, PrimaryGeneratedColumn, JoinColumn, ManyToOne } from "typeorm";
-import { Field, ID, ObjectType, InputType } from "@nestjs/graphql";
+import {Field, ID, ObjectType, InputType, Int} from "@nestjs/graphql";
 import { ProjectsEntity } from "./projects.entity";
 
 
@@ -7,7 +7,7 @@ import { ProjectsEntity } from "./projects.entity";
 @InputType('Todo')
 @ObjectType()
 export class TodoEntity {
-  @Field(() => ID)
+  @Field(type => Int)
   @PrimaryGeneratedColumn()
   id: number
 
@@ -18,10 +18,6 @@ export class TodoEntity {
   @Field()
   @Column( {default: false })
   isCompleted: boolean
-
-  @Field()
-  @Column()
-  projectId: number;
 
   @Field((type) => ProjectsEntity)
   @ManyToOne(() => ProjectsEntity, (project) => project.id)

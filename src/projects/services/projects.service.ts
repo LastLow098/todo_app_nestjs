@@ -6,6 +6,7 @@ import { CreateProjectsInput } from '../../input/create-projects.input';
 import { TodosService } from '../../todos/services/todos.service';
 import { CreateTodosInput } from '../../input/create-todos.input';
 import { TodoEntity } from "../../entities/todo.entity";
+import {UpdateProjectInput} from "../../input/update-project.input";
 
 @Injectable()
 export class ProjectsService {
@@ -24,22 +25,32 @@ export class ProjectsService {
   }
 
   async addTodoInProject(todo: TodoEntity, id: number) {
-    const project = await this.getProjectOne(id);
+    const project = await this.projectsRepository.findOne({ relations: { todos: true }, where: { id } });
     project.todos = [...project.todos, todo];
-    return this.projectsRepository.save(project);
+    return await this.projectsRepository.save(project);
   }
 
-  async getProjectOne(id: number): Promise<ProjectsEntity> {
-    return this.projectsRepository.findOne({
-      relations: { todos: true },
-      where: { id },
-    });
+  async update(updateProject: UpdateProjectInput): Promise<ProjectsEntity> {
+    return await this.projectsRepository.save(updateProject);
+  }
+
+  async delete(id: number): Promise<ProjectsEntity> {
+    let project = await this.projectsRepository.findOne({ where: {id}});
+    await this.projectsRepository.delete({id});
+    return project;
   }
 
   async getProjects(): Promise<Array<ProjectsEntity>> {
     return await this.projectsRepository.find({
-      relations: { todos: true },
-      order: { id: 'ASC' },
+      relations: {
+        todos: true
+      },
+      order: {
+        id: 'ASC',
+        todos: {
+          id: 'ASC'
+        }
+      },
     });
   }
 }

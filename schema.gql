@@ -3,29 +3,27 @@
 # ------------------------------------------------------
 
 type TodoEntity {
-  id: ID!
+  id: Int!
   text: String!
   isCompleted: Boolean!
-  projectId: Float!
   project: ProjectsEntity!
 }
 
 type ProjectsEntity {
-  id: ID!
+  id: Int!
   title: String!
   todos: [TodoEntity!]!
 }
 
 input Todo {
-  id: ID!
+  id: Int!
   text: String!
   isCompleted: Boolean!
-  projectId: Float!
   project: Project!
 }
 
 input Project {
-  id: ID!
+  id: Int!
   title: String!
   todos: [Todo!]!
 }
@@ -36,7 +34,8 @@ type Query {
 
 type Mutation {
   createTodo(todo: CreateTodosInput!, project: CreateProjectsInput): TodoEntity!
-  updateTodo(TodoId: Float!): TodoEntity!
+  changeCompleted(TodoId: Float!): TodoEntity!
+  updateTodo(updateTodo: UpdateTodosInput!): TodoEntity!
   deleteTodo(TodoId: Float!): TodoEntity
 }
 
@@ -47,4 +46,9 @@ input CreateTodosInput {
 
 input CreateProjectsInput {
   title: String!
+}
+
+input UpdateTodosInput {
+  id: Int!
+  text: String!
 }

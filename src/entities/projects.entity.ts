@@ -1,6 +1,6 @@
 import { Column, PrimaryGeneratedColumn, Entity, OneToMany } from "typeorm";
 import { TodoEntity } from "./todo.entity";
-import { Field, ID, InputType, ObjectType } from "@nestjs/graphql";
+import {Field, ID, InputType, Int, ObjectType} from "@nestjs/graphql";
 import { GraphQLList } from "graphql";
 
 
@@ -8,7 +8,7 @@ import { GraphQLList } from "graphql";
 @InputType('Project')
 @ObjectType()
 export class ProjectsEntity {
-  @Field(() => ID)
+  @Field(type => Int)
   @PrimaryGeneratedColumn()
   public id: number
 

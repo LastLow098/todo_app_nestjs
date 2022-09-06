@@ -24,12 +24,17 @@ export class TodosResolves {
   }
 
   @Mutation(() => TodoEntity)
-  async updateTodo(@Args('TodoId') id: number): Promise<TodoEntity> {
-    return await this.todosService.update(id);
+  async changeCompleted(@Args('TodoId') id: number): Promise<TodoEntity> {
+    return await this.todosService.changeCompleted(id);
+  }
+
+  @Mutation(() => TodoEntity)
+  async updateTodo(@Args('updateTodo') updateTodo: UpdateTodosInput): Promise<TodoEntity> {
+    return await this.todosService.update(updateTodo);
   }
 
   @Mutation(() => TodoEntity, { nullable: true })
-  async deleteTodo(@Args('TodoId') id: number): Promise<void> {
-    await this.todosService.delete(id)  
+  async deleteTodo(@Args('TodoId') id: number): Promise<TodoEntity> {
+    return await this.todosService.delete(id)
   }
 }
