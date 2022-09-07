@@ -36,7 +36,7 @@ type Mutation {
   createTodo(todo: CreateTodosInput!, project: CreateProjectsInput): TodoEntity!
   changeCompleted(TodoId: Float!): TodoEntity!
   updateTodo(updateTodo: UpdateTodosInput!): TodoEntity!
-  deleteTodo(TodoId: Float!): TodoEntity
+  deleteTodo(TodoId: Float!): TodoEntity!
 }
 
 input CreateTodosInput {

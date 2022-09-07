@@ -19,10 +19,4 @@ export class ProjectsEntity {
   @Field((type) => [TodoEntity])
   @OneToMany(() => TodoEntity, (todo) => todo.project, { cascade: true })
   public todos?: TodoEntity[]
-
-  public fill(title: string, todos: TodoEntity[]) {
-    this.title = title;
-    this.todos = todos;
-    return this
-  }
 }

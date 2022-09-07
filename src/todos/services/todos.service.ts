@@ -49,7 +49,8 @@ export class TodosService {
   }
 
   async delete(id: number): Promise<TodoEntity> {
+    let todo = await this.findOne(id);
     await this.todoRepository.delete({id});
-    return await this.findOne(id);
+    return todo;
   }
 }

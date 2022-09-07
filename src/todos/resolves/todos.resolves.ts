@@ -6,7 +6,7 @@ import { UpdateTodosInput } from "../../input/update-todos.input";
 import { ProjectsService } from "../../projects/services/projects.service";
 import { ProjectsEntity } from "../../entities/projects.entity";
 import { ChildProcess } from "child_process";
-import { ChildEntity } from "typeorm";
+import {ChildEntity, DeleteResult} from "typeorm";
 import { CreateProjectsInput } from "../../input/create-projects.input";
 
 @Resolver((of) => TodoEntity)
@@ -33,7 +33,7 @@ export class TodosResolves {
     return await this.todosService.update(updateTodo);
   }
 
-  @Mutation(() => TodoEntity, { nullable: true })
+  @Mutation(() => TodoEntity)
   async deleteTodo(@Args('TodoId') id: number): Promise<TodoEntity> {
     return await this.todosService.delete(id)
   }
