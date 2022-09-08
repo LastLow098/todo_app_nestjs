@@ -7,4 +7,7 @@ export class CreateTodosInput {
 
   @Field(() => Int, { nullable: true })
   projectId: number;
+
+  @Field({ nullable: true })
+  projectTitle: string;
 }

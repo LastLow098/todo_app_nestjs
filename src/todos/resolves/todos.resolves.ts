@@ -17,14 +17,13 @@ export class TodosResolves {
 
   @Mutation(() => TodoEntity)
   async createTodo(
-    @Args('todo') createTodo: CreateTodosInput,
-    @Args('project', { nullable: true }) createProject: CreateProjectsInput,
+    @Args('todo') createTodo: CreateTodosInput
   ): Promise<TodoEntity> {
-    return await this.todosService.create(createTodo, createProject);
+    return await this.todosService.create(createTodo);
   }
 
-  @Mutation(() => TodoEntity)
-  async changeCompleted(@Args('TodoId') id: number): Promise<TodoEntity> {
+  @Mutation(() => Boolean)
+  async changeCompleted(@Args('TodoId') id: number): Promise<Boolean> {
     return await this.todosService.changeCompleted(id);
   }
 
@@ -33,8 +32,8 @@ export class TodosResolves {
     return await this.todosService.update(updateTodo);
   }
 
-  @Mutation(() => TodoEntity)
-  async deleteTodo(@Args('TodoId') id: number): Promise<TodoEntity> {
+  @Mutation(() => Boolean)
+  async deleteTodo(@Args('TodoId') id: number): Promise<Boolean> {
     return await this.todosService.delete(id)
   }
 }

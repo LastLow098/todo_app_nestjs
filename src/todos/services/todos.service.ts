@@ -17,13 +17,13 @@ export class TodosService {
     private readonly projectService: ProjectsService
   ) {}
 
-  async create(createTodo: CreateTodosInput, createProject?: CreateProjectsInput): Promise<TodoEntity> {
-    if (!createProject && !createTodo.projectId || createProject && createTodo.projectId)
+  async create(createTodo: CreateTodosInput): Promise<TodoEntity> {
+    if (!createTodo.projectTitle && !createTodo.projectId || createTodo.projectTitle && createTodo.projectId)
       throw new BadRequestException('Invalid input data');
 
-    let { text, projectId } = createTodo
+    let { text, projectId, projectTitle } = createTodo
     let todo = this.todoRepository.create({ text });
-    createProject ? await this.projectService.create(createProject, todo) : await this.projectService.addTodoInProject(todo, projectId);
+    createTodo.projectTitle ? await this.projectService.create({ title: projectTitle }, todo) : await this.projectService.addTodoInProject(todo, projectId);
     return await this.todoRepository.findOne({
       where: { id: todo.id },
       relations: { project: true }
@@ -42,15 +42,16 @@ export class TodosService {
     return await this.todoRepository.save(updateTodo);
   }
 
-  async changeCompleted(id: number): Promise<TodoEntity> {
+  async changeCompleted(id: number): Promise<Boolean> {
     let todo = await this.findOne(id);
     todo.isCompleted = !todo.isCompleted;
-    return await this.todoRepository.save(todo);
+    await this.todoRepository.save(todo)
+    return todo.isCompleted;
   }
 
-  async delete(id: number): Promise<TodoEntity> {
-    let todo = await this.findOne(id);
+  async delete(id: number): Promise<Boolean> {
+    await this.findOne(id);
     await this.todoRepository.delete({id});
-    return todo;
+    return true;
   }
 }
