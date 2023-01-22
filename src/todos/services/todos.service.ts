@@ -17,17 +17,20 @@ export class TodosService {
     private readonly projectService: ProjectsService
   ) {}
 
-  async create(createTodo: CreateTodosInput): Promise<TodoEntity> {
+  async create(createTodo: CreateTodosInput): Promise<ProjectsEntity> {
     if (!createTodo.projectTitle && !createTodo.projectId || createTodo.projectTitle && createTodo.projectId)
       throw new BadRequestException('Invalid input data');
 
     let { text, projectId, projectTitle } = createTodo
     let todo = this.todoRepository.create({ text });
-    createTodo.projectTitle ? await this.projectService.create({ title: projectTitle }, todo) : await this.projectService.addTodoInProject(todo, projectId);
-    return await this.todoRepository.findOne({
-      where: { id: todo.id },
-      relations: { project: true }
-    });
+    return createTodo.projectTitle ? await this.projectService.create({ title: projectTitle }, todo) : await this.projectService.addTodoInProject(todo, projectId);
+
+    // await this.todoRepository.findOne({
+    //   where: { id: todo.id },
+    //   relations: {
+    //     project: true
+    //   }
+    // });
   }
 
   async findOne(id: number): Promise<TodoEntity> {
@@ -45,7 +48,7 @@ export class TodosService {
   async changeCompleted(id: number): Promise<Boolean> {
     let todo = await this.findOne(id);
     todo.isCompleted = !todo.isCompleted;
-    await this.todoRepository.save(todo)
+    await this.todoRepository.save(todo);
     return todo.isCompleted;
   }
 

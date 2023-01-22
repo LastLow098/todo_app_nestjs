@@ -21,13 +21,14 @@ export class ProjectsService {
   ): Promise<ProjectsEntity> {
     const project = await this.projectsRepository.create(createProject);
     project.todos = [todo];
-    return this.projectsRepository.save(project);
+    return await this.projectsRepository.save(project);
   }
 
   async addTodoInProject(todo: TodoEntity, id: number) {
     const project = await this.projectsRepository.findOne({ relations: { todos: true }, where: { id } });
     project.todos = [...project.todos, todo];
-    return await this.projectsRepository.save(project);
+    await this.projectsRepository.save(project);
+    return await this.projectsRepository.findOne({ where: { todos: { id: todo.id }}, relations: { todos: true } })
   }
 
   async update(updateProject: UpdateProjectInput): Promise<ProjectsEntity> {

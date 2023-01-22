@@ -15,10 +15,10 @@ export class TodosResolves {
   ) {
   }
 
-  @Mutation(() => TodoEntity)
+  @Mutation(() => ProjectsEntity)
   async createTodo(
     @Args('todo') createTodo: CreateTodosInput
-  ): Promise<TodoEntity> {
+  ): Promise<ProjectsEntity> {
     return await this.todosService.create(createTodo);
   }
 

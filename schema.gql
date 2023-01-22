@@ -33,7 +33,7 @@ type Query {
 }
 
 type Mutation {
-  createTodo(todo: CreateTodosInput!): TodoEntity!
+  createTodo(todo: CreateTodosInput!): ProjectsEntity!
   changeCompleted(TodoId: Float!): Boolean!
   updateTodo(updateTodo: UpdateTodosInput!): TodoEntity!
   deleteTodo(TodoId: Float!): Boolean!
